@@ -46,7 +46,6 @@ function SkillOrb({ name, color, position }: { name: string; color: string; posi
         {/* Label */}
         <Billboard position={[0, 0.7, 0]}>
           <Text
-            font="/fonts/GeistMono-Regular.ttf"
             fontSize={0.18}
             color="#ffffff"
             anchorX="center"

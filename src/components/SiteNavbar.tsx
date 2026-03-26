@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
-const navLinks = ["About", "Experience", "Projects", "Skills", "Contact"];
+const navLinks = ["Home", "About", "Experience", "Projects", "Skills", "Contact"];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -12,8 +12,7 @@ const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
 
-      // Detect active section
-      const sections = ["hero", ...navLinks.map(l => l.toLowerCase())];
+      const sections = ["hero", ...navLinks.map((l) => l.toLowerCase())];
       for (const section of sections.reverse()) {
         const el = document.getElementById(section);
         if (el && el.getBoundingClientRect().top <= 150) {
@@ -28,27 +27,30 @@ const Navbar = () => {
   }, []);
 
   const scrollTo = (id: string) => {
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
+    const sectionId = id.toLowerCase() === "home" ? "hero" : id.toLowerCase();
+    document
+      .getElementById(sectionId)
+      ?.scrollIntoView({ behavior: "smooth" });
     setOpen(false);
   };
 
   return (
-    <nav 
+    <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-background/90 backdrop-blur-xl border-b border-border shadow-lg shadow-black/10' 
-          : 'bg-transparent'
+        scrolled
+          ? "border-b border-border bg-background/90 shadow-lg shadow-black/10 backdrop-blur-xl"
+          : "bg-transparent"
       }`}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo with glitch effect on hover */}
-        <button 
-          onClick={() => scrollTo("hero")} 
+        <button
+          onClick={() => scrollTo("hero")}
           className="group relative font-mono text-sm text-primary transition-all hover:text-glow"
         >
-          <span className="relative z-10">&lt;CODE_GEN /&gt;</span>
-          <span className="absolute inset-0 opacity-0 group-hover:opacity-100 text-primary/50 blur-[2px] transition-opacity">
-            &lt;CODE_GEN /&gt;
+          <span className="relative z-10">Logo</span>
+          <span className="absolute inset-0 text-primary/50 opacity-0 blur-[2px] transition-opacity group-hover:opacity-100">
+            Logo
           </span>
         </button>
 
@@ -61,71 +63,78 @@ const Navbar = () => {
               className="group relative font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
               style={{ animationDelay: `${i * 50}ms` }}
             >
-              <span className={`transition-colors ${activeSection === l.toLowerCase() ? 'text-primary' : ''}`}>
+              <span
+                className={`transition-colors ${
+                  activeSection === (l.toLowerCase() === "home" ? "hero" : l.toLowerCase()) ? "text-primary" : ""
+                }`}
+              >
                 {l}
               </span>
-              {/* Active indicator */}
-              <span 
+              <span
                 className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 ${
-                  activeSection === l.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'
-                }`} 
+                  activeSection === (l.toLowerCase() === "home" ? "hero" : l.toLowerCase()) ? "w-full" : "w-0 group-hover:w-full"
+                }`}
               />
             </button>
           ))}
-          
+
           {/* CTA Button */}
           <button
             onClick={() => scrollTo("contact")}
-            className="group relative border border-primary px-4 py-2 font-mono text-xs text-primary transition-all overflow-hidden hover:text-primary-foreground"
+            className="group relative overflow-hidden border border-primary px-4 py-2 font-mono text-xs text-primary transition-all hover:text-primary-foreground"
           >
             <span className="relative z-10">Hire Me</span>
-            <span className="absolute inset-0 bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+            <span className="absolute inset-0 -translate-x-full transform bg-primary transition-transform duration-300 group-hover:translate-x-0" />
           </button>
         </div>
 
         {/* Mobile menu button */}
-        <button 
-          className="relative text-foreground md:hidden p-2 transition-colors hover:text-primary" 
+        <button
+          className="relative p-2 text-foreground transition-colors hover:text-primary md:hidden"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
-          <div className="relative w-5 h-5">
-            <Menu 
-              size={20} 
-              className={`absolute inset-0 transition-all duration-300 ${open ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`} 
+          <div className="relative h-5 w-5">
+            <Menu
+              size={20}
+              className={`absolute inset-0 transition-all duration-300 ${
+                open ? "rotate-90 opacity-0" : "rotate-0 opacity-100"
+              }`}
             />
-            <X 
-              size={20} 
-              className={`absolute inset-0 transition-all duration-300 ${open ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`} 
+            <X
+              size={20}
+              className={`absolute inset-0 transition-all duration-300 ${
+                open ? "rotate-0 opacity-100" : "-rotate-90 opacity-0"
+              }`}
             />
           </div>
         </button>
       </div>
 
       {/* Mobile menu with slide animation */}
-      <div 
+      <div
         className={`overflow-hidden transition-all duration-300 md:hidden ${
-          open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="border-t border-border bg-background/95 backdrop-blur-xl px-6 pb-6">
+        <div className="border-t border-border bg-background/95 px-6 pb-6 backdrop-blur-xl">
           {navLinks.map((l, i) => (
             <button
               key={l}
               onClick={() => scrollTo(l)}
-              className="block w-full py-3 text-left font-mono text-sm uppercase tracking-widest text-muted-foreground transition-all hover:text-primary hover:translate-x-2"
-              style={{ 
+              className="block w-full py-3 text-left font-mono text-sm uppercase tracking-widest text-muted-foreground transition-all hover:translate-x-2 hover:text-primary"
+              style={{
                 animationDelay: `${i * 50}ms`,
                 opacity: open ? 1 : 0,
-                transform: open ? 'translateX(0)' : 'translateX(-10px)',
-                transition: `all 0.3s ${i * 0.05}s`
+                transform: open ? "translateX(0)" : "translateX(-10px)",
+                transition: `all 0.3s ${i * 0.05}s`,
               }}
             >
-              <span className="text-primary mr-2">{String(i + 1).padStart(2, '0')}.</span>
+              <span className="mr-2 text-primary">{String(i + 1).padStart(2, "0")}.</span>
               {l}
             </button>
           ))}
-          
+
           <button
             onClick={() => scrollTo("contact")}
             className="mt-4 w-full border border-primary py-3 font-mono text-sm uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-primary-foreground"

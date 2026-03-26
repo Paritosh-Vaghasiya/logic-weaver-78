@@ -1,132 +1,226 @@
-import { Terminal, ExternalLink } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ExternalLink, Github } from "lucide-react";
 import AnimatedSection from "./AnimatedSection";
 
-const projects = [
+type Project = {
+  title: string;
+  subtitle: string;
+  description: string;
+  categories: string[];
+  stack: string[];
+  github?: string;
+  demo?: string;
+};
+
+const filters = [
+  "All",
+  "AI",
+  "Web Development",
+  "SEO",
+  "Finance",
+  "Education",
+  "Full-Stack",
+];
+
+const projects: Project[] = [
   {
-    name: "NEURAL_ARCH_V2",
-    description: "Next-gen visualization engine for deep learning models, rendering complex tensors in real-time using WebGL.",
-    tags: ["React", "TensorFlow", "PostgreSQL"],
-    status: "LIVE",
+    title: "AI Sanskrit-to-Gujarati Translator",
+    subtitle: "AI Sanskrit-to-Gujarati Translator",
+    categories: ["AI", "Web Development"],
+    description:
+      "A web application designed to help users, especially Swamis at Mandirs, translate Sanskrit scriptures into Gujarati. Utilizes OCR with OpenCV-enhanced image processing and Tesseract for improved text recognition, followed by NLP translation with IndicTrans2.",
+    stack: [
+      "Python",
+      "Django",
+      "OpenCV",
+      "Tesseract",
+      "IndicTrans2",
+      "Next.js",
+    ],
   },
   {
-    name: "QUANTUM_LEDGER",
-    description: "A high-throughput distributed database designed for post-quantum cryptographic standards.",
-    tags: ["Rust", "gRPC", "Docker"],
-    status: "BETA",
+    title: "Code211 Hackathon Website",
+    subtitle: "Code211 Hackathon Website",
+    categories: ["Web Development", "SEO"],
+    description:
+      "Developed the official Code211 Hackathon website to streamline communication, registration, and event management. Implemented strong SEO techniques to improve visibility and ensure participants could easily find resources before and during the event.",
+    stack: ["HTML", "CSS", "JavaScript", "GitHub Pages"],
+    github: "#",
+    demo: "#",
   },
   {
-    name: "SYNTAX_HUNT",
-    description: "Static analysis tool for catching memory leaks in low-level C++ applications before compilation.",
-    tags: ["LLVM", "Python", "Qt"],
-    status: "LIVE",
+    title: "ICEG Non-Profit Website",
+    subtitle: "ICEG Non-Profit Website",
+    categories: ["Web Development"],
+    description:
+      "This website was built for ICEG, a community-oriented non-profit, to promote events and inform visitors. Focus was placed on UI/UX, accessibility, and fast load times using Next.js with server-side rendering.",
+    stack: ["Next.js", "React", "Tailwind CSS", "GitHub Pages"],
+    github: "#",
+    demo: "#",
   },
   {
-    name: "VOID_COMMERCE",
-    description: "Headless commerce engine capable of handling 100k+ concurrent transactions with sub-10ms latency.",
-    tags: ["Next.js", "Go", "Redis"],
-    status: "DEV",
+    title: "SpendSense",
+    subtitle: "SpendSense",
+    categories: ["Web Development", "Finance"],
+    description:
+      "SpendSense is a responsive web app that helps users manage their finances. Users can track income, expenses, and categories through a dynamic UI connected to a PostgreSQL database via Supabase.",
+    stack: [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Supabase",
+      "Bootstrap",
+      "GitHub Pages",
+    ],
+    github: "#",
+    demo: "#",
+  },
+  {
+    title: "GradeMaster",
+    subtitle: "GradeMaster",
+    categories: ["Web Development", "Education", "Full-Stack"],
+    description:
+      "Full-stack grade management system that helps students organize classes, assignments, and visualize weighted grades in real time.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "MongoDB",
+      "Supabase",
+      "Zustand",
+      "Recharts",
+      "Tailwind CSS",
+    ],
+    github: "#",
+    demo: "#",
+  },
+  {
+    title: "CodeNode",
+    subtitle: "CodeNode",
+    categories: ["Web Development", "Education", "Full-Stack"],
+    description:
+      "Project-based, gamified CS learning platform that helps students build practical programming skills while tracking progress and collaborating with peers. Created for FBLA-2026.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "MongoDB",
+      "Supabase",
+      "Zustand",
+      "Tailwind CSS",
+      "Radix UI",
+      "Framer Motion",
+    ],
+    github: "#",
+    demo: "#",
   },
 ];
 
 const ProjectsSection = () => {
-  return (
-    <section id="projects" className="relative border-b border-border py-24 overflow-hidden">
-      {/* Diagonal lines background */}
-      <div className="absolute inset-0 overflow-hidden opacity-[0.02]">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `repeating-linear-gradient(
-              45deg,
-              transparent,
-              transparent 50px,
-              hsl(var(--primary)) 50px,
-              hsl(var(--primary)) 51px
-            )`
-          }}
-        />
-      </div>
+  const [activeFilter, setActiveFilter] = useState("All");
 
+  const visibleProjects = useMemo(() => {
+    if (activeFilter === "All") return projects;
+    return projects.filter((project) =>
+      project.categories.includes(activeFilter),
+    );
+  }, [activeFilter]);
+
+  return (
+    <section
+      id="projects"
+      className="relative overflow-hidden border-b border-border py-24"
+    >
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <AnimatedSection>
-          <div className="mb-4 font-mono text-xs text-muted-foreground">Directory: /work/featured</div>
-          <h2 className="mb-2 text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
-            Projects
+          <div className="mb-4 font-mono text-xs text-muted-foreground">
+            My Projects
+          </div>
+          <h2 className="mb-3 text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
+            A showcase of my work in data, artificial intelligence, and web
+            development.
           </h2>
-          <p className="mb-12 font-mono text-xs text-muted-foreground">
-            TOTAL_ENTRIES: {String(projects.length).padStart(2, "0")}
+          <p className="mb-10 font-body text-sm text-muted-foreground">
+            Each project represents a unique challenge and innovative solution.
           </p>
         </AnimatedSection>
 
+        <AnimatedSection delay={100}>
+          <div className="mb-8 flex flex-wrap gap-2">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                  activeFilter === filter
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+        </AnimatedSection>
+
         <div className="grid gap-6 md:grid-cols-2">
-          {projects.map((p, i) => (
-            <AnimatedSection key={p.name} delay={100 + i * 100}>
-              <div className="group relative border border-border bg-card/50 backdrop-blur-sm p-6 transition-all duration-500 hover:border-primary overflow-hidden">
-                {/* Animated gradient background on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                
-                {/* Scan line effect */}
-                <div className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent h-[200%] animate-scan" />
+          {visibleProjects.map((project, index) => (
+            <AnimatedSection key={project.title} delay={150 + index * 50}>
+              <article className="h-full border border-border bg-card/50 p-6 backdrop-blur-sm transition-colors hover:border-primary">
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {project.categories.map((category) => (
+                    <span
+                      key={`${project.title}-${category}`}
+                      className="border border-border px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-primary"
+                    >
+                      {category}
+                    </span>
+                  ))}
                 </div>
 
-                <div className="relative z-10">
-                  <div className="mb-4 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Terminal className="h-4 w-4 text-primary transition-transform duration-300 group-hover:rotate-12" />
-                      <h3 className="font-mono text-sm font-bold uppercase tracking-widest text-foreground">{p.name}</h3>
-                    </div>
-                    
-                    {/* Status indicator */}
-                    <div className={`flex items-center gap-2 font-mono text-[10px] ${
-                      p.status === 'LIVE' ? 'text-primary' : 
-                      p.status === 'BETA' ? 'text-yellow-500' : 'text-muted-foreground'
-                    }`}>
-                      <span className={`h-1.5 w-1.5 rounded-full ${
-                        p.status === 'LIVE' ? 'bg-primary animate-pulse' : 
-                        p.status === 'BETA' ? 'bg-yellow-500' : 'bg-muted-foreground'
-                      }`} />
-                      {p.status}
-                    </div>
-                  </div>
-                  
-                  <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">{p.description}</p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-wrap gap-2">
-                      {p.tags.map((t) => (
-                        <span 
-                          key={t} 
-                          className="border border-border px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-all duration-300 group-hover:border-primary/30 group-hover:text-foreground"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:text-primary" />
-                  </div>
+                <h3 className="mb-1 text-lg font-semibold text-foreground">
+                  {project.title}
+                </h3>
+                <p className="mb-4 font-mono text-xs text-muted-foreground">
+                  {project.subtitle}
+                </p>
+                <p className="mb-5 font-body text-sm leading-relaxed text-muted-foreground">
+                  {project.description}
+                </p>
+
+                <div className="mb-5 flex flex-wrap gap-2">
+                  {project.stack.map((tech) => (
+                    <span
+                      key={`${project.title}-${tech}`}
+                      className="border border-border px-2 py-1 font-mono text-[10px] text-muted-foreground"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
 
-                {/* Corner decorations */}
-                <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-transparent group-hover:border-primary transition-colors duration-300" />
-                <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-transparent group-hover:border-primary transition-colors duration-300" />
-              </div>
+                <div className="flex items-center gap-4 font-mono text-xs">
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      <Github className="h-4 w-4" />
+                      GitHub
+                    </a>
+                  )}
+                  {project.demo && (
+                    <a
+                      href={project.demo}
+                      className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Live Demo
+                    </a>
+                  )}
+                </div>
+              </article>
             </AnimatedSection>
           ))}
         </div>
-
-        <AnimatedSection delay={500}>
-          <div className="mt-8 flex items-center gap-4 font-mono text-xs text-muted-foreground">
-            <span className="text-primary">STATUS</span>
-            <span className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-              LIVE_SERVER
-            </span>
-            <span className="ml-4 text-primary">BRANCH</span>
-            <span>main/production</span>
-          </div>
-        </AnimatedSection>
       </div>
     </section>
   );

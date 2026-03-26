@@ -4,46 +4,51 @@ import AnimatedSection from "./AnimatedSection";
 const jobs = [
   {
     id: "01",
-    period: "PRESENT",
-    company: "NEURAL_SYNC",
-    title: "Lead Systems Architect",
-    description: "Pioneering distributed neural networks for edge computing environments. Orchestrating the transition from monolithic legacy systems to reactive, event-driven micro-architectures.",
+    period: "Jan 2025 - Present",
+    company: "ICEG • Remote",
+    title: "Contract | Full-Stack Developer",
+    description: "Developing scalable web features and maintaining secure full-stack systems for a community-driven non-profit platform.",
     stats: [
-      { label: "AVAILABILITY", value: "99.9% Uptime" },
-      { label: "THROUGHPUT", value: "2.4M req/s" },
+      { label: "TYPE", value: "Contract" },
+      { label: "LOCATION", value: "Remote" },
     ],
     bullets: [
-      "Architected a custom Go-based orchestration engine reducing latency by 42% across global clusters.",
-      "Implemented zero-trust security protocols ensuring compliance with ISO-27001 standards.",
-      "Mentored a team of 12 engineers, fostering a culture of test-driven development.",
+      "Built and shipped production-ready full-stack features with strong UI/UX and reliability standards.",
+      "Collaborated directly with stakeholders to prioritize roadmap items and iterative improvements.",
+      "Focused on performance, accessibility, and maintainable component architecture.",
     ],
-    tags: ["GO", "KUBERNETES", "GRPC", "RUST"],
+    tags: ["Next.js", "TypeScript", "Tailwind CSS", "Supabase"],
   },
   {
     id: "02",
-    period: "2021-2023",
-    company: "VOID_LABS",
-    title: "Senior Core Engineer",
-    description: "Led the development of open-source tooling for blockchain observability. Focused on performance profiling and real-time data visualization of peer-to-peer networks.",
-    stats: [{ label: "DATA PROCESSING", value: "15PB / MONTHLY" }],
+    period: "Oct 2023 - Present",
+    company: "Code211 • Schaumburg, IL",
+    title: "Full-time | Co-Director & Web Developer",
+    description: "Leading web initiatives, event technology, and platform development to support education-focused programs and hackathon operations.",
+    stats: [{ label: "TYPE", value: "Full-time" }],
     bullets: [
-      "Optimized database query performance by 300% using advanced indexing strategies in PostgreSQL.",
-      "Designed and deployed a serverless analytics pipeline handling massive bursts in traffic.",
+      "Directed website and product development efforts across multiple collaborative student and mentor teams.",
+      "Implemented SEO and content architecture for higher discoverability and onboarding clarity.",
+      "Built and maintained event-facing web experiences used by participants during hackathons.",
     ],
-    tags: ["TYPESCRIPT", "POSTGRES", "AWS"],
+    tags: ["Next.js", "SEO", "UI/UX", "Leadership"],
   },
   {
     id: "03",
-    period: "2019-2021",
-    company: "KINETIC_OS",
-    title: "Backend Developer",
-    description: "Full-stack development for a high-frequency trading platform. Specialized in low-latency UI components and real-time websocket integrations.",
+    period: "Aug 2022 - May 2026",
+    company: "Schaumburg High School • Schaumburg, IL",
+    title: "Education | Diploma",
+    description: "Academic foundation in computer science, data, and software engineering with project-based leadership in technical competitions.",
     stats: [
-      { label: "EXECUTION", value: "<5ms Latency" },
-      { label: "USER BASE", value: "500k+ Active" },
+      { label: "TYPE", value: "Education" },
+      { label: "PROGRAM", value: "Diploma" },
     ],
-    bullets: [],
-    tags: ["REACT", "NODE.JS", "REDIS"],
+    bullets: [
+      "Advanced practical work in software, artificial intelligence, and web development.",
+      "Competed in state and national-level web design and development events.",
+      "Applied classroom and self-directed learning to real-world full-stack applications.",
+    ],
+    tags: ["Computer Science", "AI", "Web Development"],
   },
 ];
 
@@ -85,6 +90,7 @@ function AnimatedStat({ value, animate }: { value: string; animate: boolean }) {
 
 const ExperienceSection = () => {
   const [active, setActive] = useState(0);
+  const [expanded, setExpanded] = useState<number | null>(null);
   const [animateStats, setAnimateStats] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -207,7 +213,7 @@ const ExperienceSection = () => {
 
                 {j.bullets.length > 0 && (
                   <div className="mb-6 space-y-2">
-                    {j.bullets.map((b, i) => (
+                    {(expanded === active ? j.bullets : j.bullets.slice(0, 1)).map((b, i) => (
                       <p 
                         key={i} 
                         className="font-mono text-xs text-muted-foreground transition-all duration-300 hover:text-foreground hover:translate-x-1"
@@ -215,6 +221,12 @@ const ExperienceSection = () => {
                         <span className="text-primary">&gt;</span> {b}
                       </p>
                     ))}
+                    <button
+                      onClick={() => setExpanded(expanded === active ? null : active)}
+                      className="pt-1 font-mono text-xs text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
+                    >
+                      Show More
+                    </button>
                   </div>
                 )}
 

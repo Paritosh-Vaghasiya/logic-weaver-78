@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import HeroCanvas from "./HeroCanvas";
 
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
   const [typedText, setTypedText] = useState("");
-  const fullText = 'System.ready()';
+  const fullText = "System.ready()";
 
   useEffect(() => {
     setMounted(true);
@@ -39,44 +40,27 @@ const HeroSection = () => {
       <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32">
         <div className="max-w-2xl">
           {/* Typed command */}
-          <p className={`mb-2 font-mono text-xs text-primary transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+          <p className={`mb-2 font-mono text-xs text-primary transition-opacity duration-500 ${mounted ? "opacity-100" : "opacity-0"}`}>
             {typedText}<span className="animate-blink">|</span>
           </p>
 
-          {/* Main heading with staggered reveal */}
-          <h1 className="mb-8 text-5xl font-bold uppercase leading-none tracking-tight text-foreground md:text-7xl lg:text-8xl">
-            <span 
-              className={`inline-block transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+          <h1 className="mb-2 text-4xl font-bold tracking-tight text-foreground md:text-6xl">
+            <span
+              className={`inline-block transition-all duration-700 delay-200 ${mounted ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
             >
-              ARCHITECTING
-            </span>
-            <br />
-            <span 
-              className={`inline-block text-glow text-primary transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-            >
-              LOGIC
-            </span>
-            <br />
-            <span 
-              className={`inline-block transition-all duration-700 delay-400 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-            >
-              INTO REALITY.
+              Paritosh Vaghasiya
             </span>
           </h1>
+          <p className="mb-6 font-mono text-sm text-primary">
+            Computer Scientist | Full-Stack Developer | |
+          </p>
 
-          {/* System info panel */}
-          <div 
-            className={`mb-8 space-y-2 border-l-2 border-primary pl-4 font-mono text-xs text-muted-foreground transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
-          >
-            <p className="flex items-center gap-2">
-              System.status: <span className="text-primary relative">"Active"<span className="absolute -right-2 top-0 h-2 w-2 rounded-full bg-primary animate-ping" /></span>
-            </p>
-            <p>Role: <span className="text-primary">["SWE", "Data Scientist", "AI Engineer"]</span></p>
-            <p className="text-terminal-dim">// Initializing core modules...</p>
-          </div>
+          <p className="mb-8 max-w-2xl font-body text-base leading-relaxed text-muted-foreground">
+            Building innovative solutions at the intersection of data, artificial intelligence, and web development.
+            Passionate about creating secure, scalable, and user-friendly applications.
+          </p>
 
-          {/* CTA buttons */}
-          <div className={`flex flex-wrap gap-4 transition-all duration-700 delay-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className={`mb-6 flex flex-wrap gap-4 transition-all duration-700 delay-700 ${mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}>
             <a
               href="#projects"
               className="group relative border border-primary bg-primary px-6 py-3 font-mono text-xs uppercase tracking-widest text-primary-foreground transition-all hover:bg-transparent hover:text-primary overflow-hidden"
@@ -85,12 +69,19 @@ const HeroSection = () => {
               <span className="absolute inset-0 bg-primary/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             </a>
             <a
-              href="#about"
+              href="/resume.pdf"
+              download
               className="group border border-border px-6 py-3 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-all hover:border-primary hover:text-primary relative overflow-hidden"
             >
-              <span className="relative z-10">Documentation</span>
+              <span className="relative z-10">Download Resume</span>
               <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-primary group-hover:w-full transition-all duration-300" />
             </a>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-muted-foreground">
+            <a href="#" className="flex items-center gap-2 transition-colors hover:text-primary"><Github className="h-4 w-4" />GitHub</a>
+            <a href="#" className="flex items-center gap-2 transition-colors hover:text-primary"><Linkedin className="h-4 w-4" />LinkedIn</a>
+            <a href="mailto:paritoshnvaghasiya@gmail.com" className="flex items-center gap-2 transition-colors hover:text-primary"><Mail className="h-4 w-4" />Email</a>
           </div>
         </div>
       </div>
@@ -100,7 +91,7 @@ const HeroSection = () => {
         <div className="h-12 w-px bg-gradient-to-b from-primary to-transparent relative overflow-hidden">
           <div className="absolute inset-0 bg-primary animate-scroll-line" />
         </div>
-        <span>Scroll</span>
+        <span>Scroll Down</span>
       </div>
     </section>
   );
