@@ -7,7 +7,8 @@ const jobs = [
     period: "Jan 2025 - Present",
     company: "ICEG • Remote",
     title: "Contract | Full-Stack Developer",
-    description: "Developing scalable web features and maintaining secure full-stack systems for a community-driven non-profit platform.",
+    description:
+      "Developing scalable web features and maintaining secure full-stack systems for a community-driven non-profit platform.",
     stats: [
       { label: "TYPE", value: "Contract" },
       { label: "LOCATION", value: "Remote" },
@@ -24,7 +25,8 @@ const jobs = [
     period: "Oct 2023 - Present",
     company: "Code211 • Schaumburg, IL",
     title: "Full-time | Co-Director & Web Developer",
-    description: "Leading web initiatives, event technology, and platform development to support education-focused programs and hackathon operations.",
+    description:
+      "Leading web initiatives, event technology, and platform development to support education-focused programs and hackathon operations.",
     stats: [{ label: "TYPE", value: "Full-time" }],
     bullets: [
       "Directed website and product development efforts across multiple collaborative student and mentor teams.",
@@ -38,7 +40,8 @@ const jobs = [
     period: "Aug 2022 - May 2026",
     company: "Schaumburg High School • Schaumburg, IL",
     title: "Education | Diploma",
-    description: "Academic foundation in computer science, data, and software engineering with project-based leadership in technical competitions.",
+    description:
+      "Academic foundation in computer science, data, and software engineering with project-based leadership in technical competitions.",
     stats: [
       { label: "TYPE", value: "Education" },
       { label: "PROGRAM", value: "Diploma" },
@@ -55,13 +58,13 @@ const jobs = [
 // Animated stat counter
 function AnimatedStat({ value, animate }: { value: string; animate: boolean }) {
   const [display, setDisplay] = useState(value);
-  
+
   useEffect(() => {
     if (!animate) {
       setDisplay(value);
       return;
     }
-    
+
     const chars = "0123456789ABCDEF%/.+<>kMBPT";
     let iterations = 0;
     const interval = setInterval(() => {
@@ -70,10 +73,18 @@ function AnimatedStat({ value, animate }: { value: string; animate: boolean }) {
           .split("")
           .map((char, index) => {
             if (index < iterations) return value[index];
-            if (char === " " || char === "." || char === "/" || char === "%" || char === "<" || char === ">") return char;
+            if (
+              char === " " ||
+              char === "." ||
+              char === "/" ||
+              char === "%" ||
+              char === "<" ||
+              char === ">"
+            )
+              return char;
             return chars[Math.floor(Math.random() * chars.length)];
           })
-          .join("")
+          .join(""),
       );
       iterations += 0.5;
       if (iterations >= value.length) {
@@ -81,7 +92,7 @@ function AnimatedStat({ value, animate }: { value: string; animate: boolean }) {
         setDisplay(value);
       }
     }, 30);
-    
+
     return () => clearInterval(interval);
   }, [value, animate]);
 
@@ -102,7 +113,7 @@ const ExperienceSection = () => {
           observer.disconnect();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
     if (sectionRef.current) {
@@ -119,46 +130,74 @@ const ExperienceSection = () => {
   }, [active]);
 
   return (
-    <section id="experience" ref={sectionRef} className="relative border-b border-border py-24 overflow-hidden">
+    <section
+      id="experience"
+      ref={sectionRef}
+      className="relative overflow-hidden bg-background py-24 md:py-28"
+    >
       {/* Circuit pattern background */}
       <div className="absolute inset-0 overflow-hidden">
-        <svg className="absolute inset-0 w-full h-full opacity-[0.02]" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          className="absolute inset-0 w-full h-full opacity-[0.02]"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <defs>
-            <pattern id="circuit" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <path d="M 50 0 L 50 30 M 50 70 L 50 100 M 0 50 L 30 50 M 70 50 L 100 50" stroke="currentColor" strokeWidth="0.5" fill="none" className="text-primary" />
-              <circle cx="50" cy="50" r="4" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-primary" />
+            <pattern
+              id="circuit"
+              x="0"
+              y="0"
+              width="100"
+              height="100"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 50 0 L 50 30 M 50 70 L 50 100 M 0 50 L 30 50 M 70 50 L 100 50"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                fill="none"
+                className="text-primary"
+              />
+              <circle
+                cx="50"
+                cy="50"
+                r="4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.5"
+                className="text-primary"
+              />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#circuit)" />
         </svg>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
         <AnimatedSection>
-          <div className="mb-4 font-mono text-xs text-muted-foreground">Execution Path</div>
-          <h2 className="mb-12 text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
-            PROFESSIONAL<br /><span className="text-primary text-glow">ARCHITECTURE.</span>
+          <div className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+            Execution Path
+          </div>
+          <h2 className="mb-12 text-4xl font-semibold tracking-[-0.02em] text-foreground md:text-5xl">
+            PROFESSIONAL
+            <br />
+            <span className="text-primary text-glow">ARCHITECTURE.</span>
           </h2>
         </AnimatedSection>
 
         {/* Timeline tabs */}
         <AnimatedSection delay={100}>
-          <div className="mb-8 flex gap-4 border-b border-border">
+          <div className="mb-8 flex flex-wrap gap-3">
             {jobs.map((j, i) => (
               <button
                 key={j.id}
                 onClick={() => setActive(i)}
-                className={`relative pb-4 font-mono text-xs uppercase tracking-widest transition-colors ${
-                  active === i ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                className={`ghost-edge relative rounded-sm px-4 py-3 font-mono text-xs uppercase tracking-[0.14em] transition-colors ${
+                  active === i
+                    ? "surface-l2 text-primary"
+                    : "surface-l1 text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {j.id} // {j.period}
-                {/* Animated underline */}
-                <span 
-                  className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ${
-                    active === i ? 'w-full' : 'w-0'
-                  }`} 
-                />
               </button>
             ))}
           </div>
@@ -168,43 +207,57 @@ const ExperienceSection = () => {
         {(() => {
           const j = jobs[active];
           return (
-            <div key={j.id} className="grid gap-8 lg:grid-cols-3 animate-fade-in">
+            <div
+              key={j.id}
+              className="grid gap-8 lg:grid-cols-3 animate-fade-in"
+            >
               <AnimatedSection delay={150}>
                 <div className="relative">
-                  <h3 className="text-2xl font-bold uppercase text-foreground">{j.company}</h3>
-                  <p className="mt-1 font-mono text-xs text-primary">{j.title}</p>
-                  
+                  <h3 className="text-2xl font-bold uppercase text-foreground">
+                    {j.company}
+                  </h3>
+                  <p className="mt-1 font-mono text-xs text-primary">
+                    {j.title}
+                  </p>
+
                   {/* Decorative element */}
                   <div className="mt-4 flex gap-1">
                     {[...Array(4)].map((_, i) => (
-                      <div 
-                        key={i} 
+                      <div
+                        key={i}
                         className="h-1 w-4 bg-primary/30"
-                        style={{ 
+                        style={{
                           opacity: i <= active ? 1 : 0.3,
-                          transition: 'opacity 0.3s',
-                          transitionDelay: `${i * 50}ms`
-                        }} 
+                          transition: "opacity 0.3s",
+                          transitionDelay: `${i * 50}ms`,
+                        }}
                       />
                     ))}
                   </div>
                 </div>
               </AnimatedSection>
-              
+
               <AnimatedSection delay={200} className="lg:col-span-2">
-                <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">{j.description}</p>
+                <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">
+                  {j.description}
+                </p>
 
                 {j.stats.length > 0 && (
                   <div className="mb-6 flex flex-wrap gap-6">
                     {j.stats.map((s, i) => (
-                      <div 
-                        key={s.label} 
-                        className="group border border-border px-4 py-2 transition-all hover:border-primary hover:border-glow"
+                      <div
+                        key={s.label}
+                        className="group surface-l1 ghost-edge rounded-sm px-4 py-2 transition-all hover:border-glow"
                         style={{ animationDelay: `${i * 100}ms` }}
                       >
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</span>
+                        <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                          {s.label}
+                        </span>
                         <p className="font-mono text-sm text-primary">
-                          <AnimatedStat value={s.value} animate={animateStats} />
+                          <AnimatedStat
+                            value={s.value}
+                            animate={animateStats}
+                          />
                         </p>
                       </div>
                     ))}
@@ -213,16 +266,21 @@ const ExperienceSection = () => {
 
                 {j.bullets.length > 0 && (
                   <div className="mb-6 space-y-2">
-                    {(expanded === active ? j.bullets : j.bullets.slice(0, 1)).map((b, i) => (
-                      <p 
-                        key={i} 
+                    {(expanded === active
+                      ? j.bullets
+                      : j.bullets.slice(0, 1)
+                    ).map((b, i) => (
+                      <p
+                        key={i}
                         className="font-mono text-xs text-muted-foreground transition-all duration-300 hover:text-foreground hover:translate-x-1"
                       >
                         <span className="text-primary">&gt;</span> {b}
                       </p>
                     ))}
                     <button
-                      onClick={() => setExpanded(expanded === active ? null : active)}
+                      onClick={() =>
+                        setExpanded(expanded === active ? null : active)
+                      }
                       className="pt-1 font-mono text-xs text-primary underline underline-offset-4 transition-colors hover:text-primary/80"
                     >
                       Show More
@@ -232,9 +290,9 @@ const ExperienceSection = () => {
 
                 <div className="flex flex-wrap gap-2">
                   {j.tags.map((t, i) => (
-                    <span 
-                      key={t} 
-                      className="border border-border px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-all duration-300 hover:border-primary hover:text-primary"
+                    <span
+                      key={t}
+                      className="surface-l1 ghost-edge rounded-sm px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground transition-all duration-300 hover:text-primary"
                       style={{ animationDelay: `${i * 50}ms` }}
                     >
                       {t}

@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
-const navLinks = ["Home", "About", "Experience", "Projects", "Skills", "Contact"];
+const navLinks = [
+  "Home",
+  "About",
+  "Experience",
+  "Projects",
+  "Skills",
+  "Contact",
+];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -28,29 +35,25 @@ const Navbar = () => {
 
   const scrollTo = (id: string) => {
     const sectionId = id.toLowerCase() === "home" ? "hero" : id.toLowerCase();
-    document
-      .getElementById(sectionId)
-      ?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     setOpen(false);
   };
 
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-border bg-background/90 shadow-lg shadow-black/10 backdrop-blur-xl"
-          : "bg-transparent"
+        scrolled ? "glass-panel ghost-edge" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
         {/* Logo with glitch effect on hover */}
         <button
           onClick={() => scrollTo("hero")}
-          className="group relative font-mono text-sm text-primary transition-all hover:text-glow"
+          className="group relative font-mono text-sm uppercase tracking-[0.18em] text-primary transition-all hover:text-glow"
         >
-          <span className="relative z-10">Logo</span>
+          <span className="relative z-10">PV.01</span>
           <span className="absolute inset-0 text-primary/50 opacity-0 blur-[2px] transition-opacity group-hover:opacity-100">
-            Logo
+            PV.01
           </span>
         </button>
 
@@ -60,19 +63,25 @@ const Navbar = () => {
             <button
               key={l}
               onClick={() => scrollTo(l)}
-              className="group relative font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
+              className="group relative font-mono text-xs uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-primary"
               style={{ animationDelay: `${i * 50}ms` }}
             >
               <span
                 className={`transition-colors ${
-                  activeSection === (l.toLowerCase() === "home" ? "hero" : l.toLowerCase()) ? "text-primary" : ""
+                  activeSection ===
+                  (l.toLowerCase() === "home" ? "hero" : l.toLowerCase())
+                    ? "text-primary"
+                    : ""
                 }`}
               >
                 {l}
               </span>
               <span
-                className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 ${
-                  activeSection === (l.toLowerCase() === "home" ? "hero" : l.toLowerCase()) ? "w-full" : "w-0 group-hover:w-full"
+                className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                  activeSection ===
+                  (l.toLowerCase() === "home" ? "hero" : l.toLowerCase())
+                    ? "w-full"
+                    : "w-0 group-hover:w-full"
                 }`}
               />
             </button>
@@ -81,10 +90,10 @@ const Navbar = () => {
           {/* CTA Button */}
           <button
             onClick={() => scrollTo("contact")}
-            className="group relative overflow-hidden border border-primary px-4 py-2 font-mono text-xs text-primary transition-all hover:text-primary-foreground"
+            className="group relative overflow-hidden rounded-sm bg-primary px-4 py-2 font-mono text-xs uppercase tracking-[0.12em] text-primary-foreground transition-all hover:bg-primary/90"
           >
             <span className="relative z-10">Hire Me</span>
-            <span className="absolute inset-0 -translate-x-full transform bg-primary transition-transform duration-300 group-hover:translate-x-0" />
+            <span className="absolute inset-0 -translate-x-full transform bg-gradient-to-r from-transparent via-background/20 to-transparent transition-transform duration-300 group-hover:translate-x-0" />
           </button>
         </div>
 
@@ -117,7 +126,7 @@ const Navbar = () => {
           open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="border-t border-border bg-background/95 px-6 pb-6 backdrop-blur-xl">
+        <div className="glass-panel ghost-edge mx-4 mb-4 rounded-sm px-6 pb-6">
           {navLinks.map((l, i) => (
             <button
               key={l}
@@ -130,7 +139,9 @@ const Navbar = () => {
                 transition: `all 0.3s ${i * 0.05}s`,
               }}
             >
-              <span className="mr-2 text-primary">{String(i + 1).padStart(2, "0")}.</span>
+              <span className="mr-2 text-primary">
+                {String(i + 1).padStart(2, "0")}.
+              </span>
               {l}
             </button>
           ))}

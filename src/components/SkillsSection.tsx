@@ -41,14 +41,14 @@ const SkillsSection = () => {
   return (
     <section
       id="skills"
-      className="relative overflow-hidden border-b border-border py-24"
+      className="relative overflow-hidden bg-background py-24 md:py-28"
     >
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
         <AnimatedSection>
-          <div className="mb-4 font-mono text-xs text-muted-foreground">
+          <div className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
             Skills
           </div>
-          <h2 className="mb-4 text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
+          <h2 className="mb-4 text-4xl font-semibold tracking-[-0.02em] text-foreground md:text-5xl">
             A summary of my professional qualifications, technical expertise,
             and certifications.
           </h2>
@@ -61,15 +61,18 @@ const SkillsSection = () => {
             </h3>
             <div className="space-y-5">
               {Object.entries(technicalSkills).map(([group, values]) => (
-                <div key={group} className="border border-border p-4">
-                  <h4 className="mb-3 font-mono text-xs uppercase tracking-widest text-foreground">
+                <div
+                  key={group}
+                  className="ambient-lift surface-l1 ghost-edge rounded-sm p-4"
+                >
+                  <h4 className="mb-3 font-mono text-xs uppercase tracking-[0.14em] text-foreground">
                     {group}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {values.map((value) => (
                       <span
                         key={`${group}-${value}`}
-                        className="border border-border px-2 py-1 font-mono text-[10px] text-muted-foreground"
+                        className="surface-l2 ghost-edge rounded-sm px-2 py-1 font-mono text-[10px] text-muted-foreground"
                       >
                         {value}
                       </span>
@@ -88,7 +91,7 @@ const SkillsSection = () => {
               {certifications.map((certification) => (
                 <article
                   key={certification.name}
-                  className="border border-border p-4"
+                  className="ambient-lift surface-l1 ghost-edge rounded-sm p-4"
                 >
                   <h4 className="mb-2 text-sm font-semibold text-foreground">
                     {certification.name}

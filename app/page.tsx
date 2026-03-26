@@ -11,7 +11,7 @@ import SiteFooter from "@/components/SiteFooter";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="editorial-shell min-h-screen bg-background text-foreground">
       <SiteNavbar />
       <HeroSection />
       <AboutSection />

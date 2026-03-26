@@ -127,14 +127,14 @@ const ProjectsSection = () => {
   return (
     <section
       id="projects"
-      className="relative overflow-hidden border-b border-border py-24"
+      className="relative overflow-hidden bg-muted/35 py-24 md:py-28"
     >
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-6 md:px-10">
         <AnimatedSection>
-          <div className="mb-4 font-mono text-xs text-muted-foreground">
+          <div className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
             My Projects
           </div>
-          <h2 className="mb-3 text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
+          <h2 className="mb-3 text-4xl font-semibold tracking-[-0.02em] text-foreground md:text-5xl">
             A showcase of my work in data, artificial intelligence, and web
             development.
           </h2>
@@ -149,10 +149,10 @@ const ProjectsSection = () => {
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
-                className={`border px-3 py-1 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                className={`ghost-edge rounded-sm px-3 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors ${
                   activeFilter === filter
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                    ? "bg-primary text-primary-foreground"
+                    : "surface-l1 text-muted-foreground hover:text-primary"
                 }`}
               >
                 {filter}
@@ -164,12 +164,12 @@ const ProjectsSection = () => {
         <div className="grid gap-6 md:grid-cols-2">
           {visibleProjects.map((project, index) => (
             <AnimatedSection key={project.title} delay={150 + index * 50}>
-              <article className="h-full border border-border bg-card/50 p-6 backdrop-blur-sm transition-colors hover:border-primary">
+              <article className="ambient-lift surface-l2 ghost-edge h-full rounded-sm p-6">
                 <div className="mb-3 flex flex-wrap gap-2">
                   {project.categories.map((category) => (
                     <span
                       key={`${project.title}-${category}`}
-                      className="border border-border px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-primary"
+                      className="ghost-edge rounded-sm px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-primary"
                     >
                       {category}
                     </span>
@@ -190,7 +190,7 @@ const ProjectsSection = () => {
                   {project.stack.map((tech) => (
                     <span
                       key={`${project.title}-${tech}`}
-                      className="border border-border px-2 py-1 font-mono text-[10px] text-muted-foreground"
+                      className="surface-l1 ghost-edge rounded-sm px-2 py-1 font-mono text-[10px] text-muted-foreground"
                     >
                       {tech}
                     </span>
