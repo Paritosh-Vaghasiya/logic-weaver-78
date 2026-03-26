@@ -1,10 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const navLinks = ["About", "Experience", "Projects", "Skills", "Contact"];
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+
+      // Detect active section
+      const sections = ["hero", ...navLinks.map(l => l.toLowerCase())];
+      for (const section of sections.reverse()) {
+        const el = document.getElementById(section);
+        if (el && el.getBoundingClientRect().top <= 150) {
+          setActiveSection(section);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const scrollTo = (id: string) => {
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
@@ -12,48 +33,107 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+    <nav 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-background/90 backdrop-blur-xl border-b border-border shadow-lg shadow-black/10' 
+          : 'bg-transparent'
+      }`}
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <button onClick={() => scrollTo("hero")} className="font-mono text-sm text-primary">
-          &lt;CODE_GEN /&gt;
+        {/* Logo with glitch effect on hover */}
+        <button 
+          onClick={() => scrollTo("hero")} 
+          className="group relative font-mono text-sm text-primary transition-all hover:text-glow"
+        >
+          <span className="relative z-10">&lt;CODE_GEN /&gt;</span>
+          <span className="absolute inset-0 opacity-0 group-hover:opacity-100 text-primary/50 blur-[2px] transition-opacity">
+            &lt;CODE_GEN /&gt;
+          </span>
         </button>
 
+        {/* Desktop navigation */}
         <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((l) => (
+          {navLinks.map((l, i) => (
             <button
               key={l}
               onClick={() => scrollTo(l)}
-              className="font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
+              className="group relative font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary"
+              style={{ animationDelay: `${i * 50}ms` }}
             >
+              <span className={`transition-colors ${activeSection === l.toLowerCase() ? 'text-primary' : ''}`}>
+                {l}
+              </span>
+              {/* Active indicator */}
+              <span 
+                className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 ${
+                  activeSection === l.toLowerCase() ? 'w-full' : 'w-0 group-hover:w-full'
+                }`} 
+              />
+            </button>
+          ))}
+          
+          {/* CTA Button */}
+          <button
+            onClick={() => scrollTo("contact")}
+            className="group relative border border-primary px-4 py-2 font-mono text-xs text-primary transition-all overflow-hidden hover:text-primary-foreground"
+          >
+            <span className="relative z-10">Hire Me</span>
+            <span className="absolute inset-0 bg-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+          </button>
+        </div>
+
+        {/* Mobile menu button */}
+        <button 
+          className="relative text-foreground md:hidden p-2 transition-colors hover:text-primary" 
+          onClick={() => setOpen(!open)}
+          aria-label={open ? "Close menu" : "Open menu"}
+        >
+          <div className="relative w-5 h-5">
+            <Menu 
+              size={20} 
+              className={`absolute inset-0 transition-all duration-300 ${open ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`} 
+            />
+            <X 
+              size={20} 
+              className={`absolute inset-0 transition-all duration-300 ${open ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`} 
+            />
+          </div>
+        </button>
+      </div>
+
+      {/* Mobile menu with slide animation */}
+      <div 
+        className={`overflow-hidden transition-all duration-300 md:hidden ${
+          open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="border-t border-border bg-background/95 backdrop-blur-xl px-6 pb-6">
+          {navLinks.map((l, i) => (
+            <button
+              key={l}
+              onClick={() => scrollTo(l)}
+              className="block w-full py-3 text-left font-mono text-sm uppercase tracking-widest text-muted-foreground transition-all hover:text-primary hover:translate-x-2"
+              style={{ 
+                animationDelay: `${i * 50}ms`,
+                opacity: open ? 1 : 0,
+                transform: open ? 'translateX(0)' : 'translateX(-10px)',
+                transition: `all 0.3s ${i * 0.05}s`
+              }}
+            >
+              <span className="text-primary mr-2">{String(i + 1).padStart(2, '0')}.</span>
               {l}
             </button>
           ))}
+          
           <button
             onClick={() => scrollTo("contact")}
-            className="border border-primary px-4 py-2 font-mono text-xs text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+            className="mt-4 w-full border border-primary py-3 font-mono text-sm uppercase tracking-widest text-primary transition-all hover:bg-primary hover:text-primary-foreground"
           >
             Hire Me
           </button>
         </div>
-
-        <button className="text-foreground md:hidden" onClick={() => setOpen(!open)}>
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
       </div>
-
-      {open && (
-        <div className="border-t border-border bg-background px-6 pb-6 md:hidden">
-          {navLinks.map((l) => (
-            <button
-              key={l}
-              onClick={() => scrollTo(l)}
-              className="block w-full py-3 text-left font-mono text-sm uppercase tracking-widest text-muted-foreground"
-            >
-              {l}
-            </button>
-          ))}
-        </div>
-      )}
     </nav>
   );
 };

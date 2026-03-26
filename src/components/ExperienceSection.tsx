@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import AnimatedSection from "./AnimatedSection";
 
 const jobs = [
   {
@@ -46,50 +47,159 @@ const jobs = [
   },
 ];
 
+// Animated stat counter
+function AnimatedStat({ value, animate }: { value: string; animate: boolean }) {
+  const [display, setDisplay] = useState(value);
+  
+  useEffect(() => {
+    if (!animate) {
+      setDisplay(value);
+      return;
+    }
+    
+    const chars = "0123456789ABCDEF%/.+<>kMBPT";
+    let iterations = 0;
+    const interval = setInterval(() => {
+      setDisplay(
+        value
+          .split("")
+          .map((char, index) => {
+            if (index < iterations) return value[index];
+            if (char === " " || char === "." || char === "/" || char === "%" || char === "<" || char === ">") return char;
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join("")
+      );
+      iterations += 0.5;
+      if (iterations >= value.length) {
+        clearInterval(interval);
+        setDisplay(value);
+      }
+    }, 30);
+    
+    return () => clearInterval(interval);
+  }, [value, animate]);
+
+  return <span>{display}</span>;
+}
+
 const ExperienceSection = () => {
   const [active, setActive] = useState(0);
+  const [animateStats, setAnimateStats] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAnimateStats(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Reset animation when tab changes
+  useEffect(() => {
+    setAnimateStats(false);
+    setTimeout(() => setAnimateStats(true), 100);
+  }, [active]);
 
   return (
-    <section id="experience" className="border-b border-border py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-4 font-mono text-xs text-muted-foreground">Execution Path</div>
-        <h2 className="mb-12 text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
-          PROFESSIONAL<br /><span className="text-primary">ARCHITECTURE.</span>
-        </h2>
+    <section id="experience" ref={sectionRef} className="relative border-b border-border py-24 overflow-hidden">
+      {/* Circuit pattern background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <svg className="absolute inset-0 w-full h-full opacity-[0.02]" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="circuit" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <path d="M 50 0 L 50 30 M 50 70 L 50 100 M 0 50 L 30 50 M 70 50 L 100 50" stroke="currentColor" strokeWidth="0.5" fill="none" className="text-primary" />
+              <circle cx="50" cy="50" r="4" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-primary" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#circuit)" />
+        </svg>
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
+        <AnimatedSection>
+          <div className="mb-4 font-mono text-xs text-muted-foreground">Execution Path</div>
+          <h2 className="mb-12 text-3xl font-bold uppercase tracking-tight text-foreground md:text-4xl">
+            PROFESSIONAL<br /><span className="text-primary text-glow">ARCHITECTURE.</span>
+          </h2>
+        </AnimatedSection>
 
         {/* Timeline tabs */}
-        <div className="mb-8 flex gap-4 border-b border-border">
-          {jobs.map((j, i) => (
-            <button
-              key={j.id}
-              onClick={() => setActive(i)}
-              className={`border-b-2 pb-4 font-mono text-xs uppercase tracking-widest transition-colors ${
-                active === i ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {j.id} // {j.period}
-            </button>
-          ))}
-        </div>
+        <AnimatedSection delay={100}>
+          <div className="mb-8 flex gap-4 border-b border-border">
+            {jobs.map((j, i) => (
+              <button
+                key={j.id}
+                onClick={() => setActive(i)}
+                className={`relative pb-4 font-mono text-xs uppercase tracking-widest transition-colors ${
+                  active === i ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {j.id} // {j.period}
+                {/* Animated underline */}
+                <span 
+                  className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                    active === i ? 'w-full' : 'w-0'
+                  }`} 
+                />
+              </button>
+            ))}
+          </div>
+        </AnimatedSection>
 
-        {/* Active job detail */}
+        {/* Active job detail with transition */}
         {(() => {
           const j = jobs[active];
           return (
-            <div className="grid gap-8 lg:grid-cols-3">
-              <div>
-                <h3 className="text-2xl font-bold uppercase text-foreground">{j.company}</h3>
-                <p className="mt-1 font-mono text-xs text-primary">{j.title}</p>
-              </div>
-              <div className="lg:col-span-2">
+            <div key={j.id} className="grid gap-8 lg:grid-cols-3 animate-fade-in">
+              <AnimatedSection delay={150}>
+                <div className="relative">
+                  <h3 className="text-2xl font-bold uppercase text-foreground">{j.company}</h3>
+                  <p className="mt-1 font-mono text-xs text-primary">{j.title}</p>
+                  
+                  {/* Decorative element */}
+                  <div className="mt-4 flex gap-1">
+                    {[...Array(4)].map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="h-1 w-4 bg-primary/30"
+                        style={{ 
+                          opacity: i <= active ? 1 : 0.3,
+                          transition: 'opacity 0.3s',
+                          transitionDelay: `${i * 50}ms`
+                        }} 
+                      />
+                    ))}
+                  </div>
+                </div>
+              </AnimatedSection>
+              
+              <AnimatedSection delay={200} className="lg:col-span-2">
                 <p className="mb-6 font-body text-sm leading-relaxed text-muted-foreground">{j.description}</p>
 
                 {j.stats.length > 0 && (
                   <div className="mb-6 flex flex-wrap gap-6">
-                    {j.stats.map((s) => (
-                      <div key={s.label} className="border border-border px-4 py-2">
+                    {j.stats.map((s, i) => (
+                      <div 
+                        key={s.label} 
+                        className="group border border-border px-4 py-2 transition-all hover:border-primary hover:border-glow"
+                        style={{ animationDelay: `${i * 100}ms` }}
+                      >
                         <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{s.label}</span>
-                        <p className="font-mono text-sm text-primary">{s.value}</p>
+                        <p className="font-mono text-sm text-primary">
+                          <AnimatedStat value={s.value} animate={animateStats} />
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -98,7 +208,10 @@ const ExperienceSection = () => {
                 {j.bullets.length > 0 && (
                   <div className="mb-6 space-y-2">
                     {j.bullets.map((b, i) => (
-                      <p key={i} className="font-mono text-xs text-muted-foreground">
+                      <p 
+                        key={i} 
+                        className="font-mono text-xs text-muted-foreground transition-all duration-300 hover:text-foreground hover:translate-x-1"
+                      >
                         <span className="text-primary">&gt;</span> {b}
                       </p>
                     ))}
@@ -106,13 +219,17 @@ const ExperienceSection = () => {
                 )}
 
                 <div className="flex flex-wrap gap-2">
-                  {j.tags.map((t) => (
-                    <span key={t} className="border border-border px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  {j.tags.map((t, i) => (
+                    <span 
+                      key={t} 
+                      className="border border-border px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-all duration-300 hover:border-primary hover:text-primary"
+                      style={{ animationDelay: `${i * 50}ms` }}
+                    >
                       {t}
                     </span>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
             </div>
           );
         })()}
